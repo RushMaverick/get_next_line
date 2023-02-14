@@ -1,36 +1,63 @@
-#include <unistd.h>
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <fcntl.h>
 #include <string.h>
-#define BUFFER 10
+#include <unistd.h>
+#define BUFFER 20
 
-char *insert_it(int fd, char *temp, char *buf);
+char	*insert_it(int fd, char *temp, char *stash);
 
-char *get_it(int fd)
+// void	*ft_calloc(size_t count, size_t size)
+// {
+// 	void	*ptr;
+// 	size_t	mult;
+
+// 	if (count == 0 || size == 0)
+// 		return (ft_calloc(1, 1));
+// 	mult = count * size;
+// 	if (mult / count != size)
+// 		return (NULL);
+// 	ptr = malloc(mult);
+// 	if (!ptr)
+// 		return (0);
+// 	ft_bzero(ptr, mult);
+// 	return (ptr);
+// }
+
+char	*get_it(int fd)
 {
-	static char *buf;
-	char *temp;
-	temp = malloc(sizeof(char) * BUFFER + 1);
-	insert_it(fd, temp, buf);
-	return (temp);
+	static char	*stash;
+	char		*temp;
+
+	temp = calloc(BUFFER + 1, sizeof(char)); // remove this
+	insert_it(fd, temp, stash);
+	return (stash);
 }
 
-char *insert_it(int fd, char *temp, char *buf)
+char	*insert_it(int fd, char *temp, char *stash)
 {
-	read(fd, temp, BUFFER);
-	return(buf);
+	int	i;
+	int readbytes = 1;
+
+	i = 0;
+	while (readbytes)
+	{
+		//Check libft for function that checks for a certain character, like null terminator or newline
+		readbytes = read(fd, temp, BUFFER);
+		printf("%d\n", readbytes);
+		printf("|%s|\n", temp);
+	}
+
+	return (stash);
 }
 
-int main (void)
+int	main(void)
 {
-	char *huh;
-	int fd = open("moi.txt", O_APPEND);
+	char	*huh;
+	int		fd;
+
+	fd = open("moi.txt", O_APPEND);
 	huh = get_it(fd);
-	printf("%s", huh);
-	huh = get_it(fd);
-	printf("%s", huh);
-	huh = get_it(fd);
-	printf("%s", huh);
-	return(0);
+	// printf("%s", huh);
+	return (0);
 }
