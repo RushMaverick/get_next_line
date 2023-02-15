@@ -5,7 +5,7 @@
 #include <unistd.h>
 #define BUFFER 20
 
-char	*insert_it(int fd, char *temp, char *stash);
+char *insert_it(int fd, char *temp, char *stash);
 
 // void	*ft_calloc(size_t count, size_t size)
 // {
@@ -24,30 +24,70 @@ char	*insert_it(int fd, char *temp, char *stash);
 // 	return (ptr);
 // }
 
+static void	istheres(char *joined, char const *s1, char const *s2)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (s1[i] != '\0')
+	{
+		joined[j] = s1[i];
+		i++;
+		j++;
+	}
+	i = 0;
+	while (s2[i] != '\0')
+	{
+		joined[j] = s2[i];
+		i++;
+		j++;
+	}
+	joined[j] = '\0';
+}
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char	*joined;
+
+	if (!s2)
+		return ((char *)s1);
+	if (!s1)
+		return((char *)s2);
+	else
+		joined = calloc(strlen(s1) + strlen(s2) + 1, sizeof(char));
+	if (!joined)
+		return (NULL);
+	istheres(joined, s1, s2);
+	return (joined);
+}
+
 char	*get_it(int fd)
 {
 	static char	*stash;
 	char		*temp;
+	int 		readbytes;
 
+	readbytes = 1;
 	temp = calloc(BUFFER + 1, sizeof(char)); // remove this
-	insert_it(fd, temp, stash);
+	stash = insert_it(fd, temp, stash);
 	return (stash);
 }
 
-char	*insert_it(int fd, char *temp, char *stash)
+char *insert_it(int fd, char *temp, char *stash)
 {
-	int	i;
-	int readbytes = 1;
+	// int i;
+	int readbytes;
 
-	i = 0;
+	// i = 0;
+	readbytes = 1;
 	while (readbytes)
 	{
-		//Check libft for function that checks for a certain character, like null terminator or newline
 		readbytes = read(fd, temp, BUFFER);
-		printf("%d\n", readbytes);
-		printf("|%s|\n", temp);
+		stash = ft_strjoin(stash, temp);
 	}
-
+	//Check libft for function that checks for a certain character,like null terminator or newline
 	return (stash);
 }
 
@@ -58,6 +98,6 @@ int	main(void)
 
 	fd = open("moi.txt", O_APPEND);
 	huh = get_it(fd);
-	// printf("%s", huh);
+	printf("%s\n", huh);
 	return (0);
 }
