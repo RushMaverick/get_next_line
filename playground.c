@@ -109,9 +109,14 @@ char *handle_newline(char *temp, char *stash)
 		if (temp[i] == '\n')
 		{
 			i++;
-			while (temp[i] != '\n' || temp[i] != '\0')
+			if (temp[i] != '\n' || temp[i] != '\0')
 			{
-				stash[i] = temp[i]; //not allocated memory
+				i++;
+				while (temp[i])
+				{
+					stash[i] = temp[i]; //not allocated memory
+					i++;
+				}
 			}
 		}
 		newline[i] = temp[i];
