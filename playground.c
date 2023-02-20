@@ -114,9 +114,10 @@ char *handle_newline(char *temp, char *stash)
 				i++;
 				while (temp[i])
 				{
-					stash[i] = temp[i]; //not allocated memory
+					stash[i] = temp[i];
 					i++;
 				}
+				return (newline);
 			}
 		}
 		newline[i] = temp[i];
@@ -131,13 +132,10 @@ char *insert_it(int fd, char *temp, char *stash)
 	char *newline;
 
 	readbytes = 1;
-	while (readbytes)
-	{
-		ft_memset(temp, 0, strlen(temp)); //change to ft_strlen
-		readbytes = read(fd, temp, BUFFER);
-		newline = handle_newline(temp, stash); //This might have to be handled after the loop. 
-		stash = ft_strjoin(stash, temp);
-	}
+	ft_memset(temp, 0, strlen(temp)); //change to ft_strlen
+	readbytes = read(fd, temp, BUFFER);
+	newline = handle_newline(temp, stash); //This might have to be handled after the loop. 
+	stash = ft_strjoin(stash, temp);
 	free(temp);
 	//Check libft for function that checks for a certain character,like null terminator or newline
 	return (newline);
@@ -149,7 +147,7 @@ int	main(void)
 	int		fd;
 	int		i;
 
-	i = 1;
+	i = 2;
 	fd = open("moi.txt", O_RDONLY);
 	while (i)
 	{
