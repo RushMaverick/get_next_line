@@ -109,15 +109,10 @@ char *handle_newline(char *temp, char *stash)
 		if (temp[i] == '\n')
 		{
 			i++;
-			if (temp[i] != '\n' || temp[i] != '\0')
+			while (temp[i])
 			{
+				stash[i] = temp[i];
 				i++;
-				while (temp[i])
-				{
-					stash[i] = temp[i];
-					i++;
-				}
-				return (newline);
 			}
 		}
 		newline[i] = temp[i];
@@ -135,7 +130,6 @@ char *insert_it(int fd, char *temp, char *stash)
 	ft_memset(temp, 0, strlen(temp)); //change to ft_strlen
 	readbytes = read(fd, temp, BUFFER);
 	newline = handle_newline(temp, stash); //This might have to be handled after the loop. 
-	stash = ft_strjoin(stash, temp);
 	free(temp);
 	//Check libft for function that checks for a certain character,like null terminator or newline
 	return (newline);
