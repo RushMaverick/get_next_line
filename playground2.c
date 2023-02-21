@@ -72,7 +72,10 @@ char *get_it(fd)
 	static char *stash;
 	char *oneline;
 
-	stash = calloc(BUFFER_SIZE + 1, sizeof(char));
+	if (!stash)
+	{
+		stash = calloc(BUFFER_SIZE + 1, sizeof(char));	
+	}
 	oneline = calloc(BUFFER_SIZE + 1, sizeof(char));
 	oneline = get_oneline(oneline, stash, fd);
 	return (oneline);
@@ -84,7 +87,6 @@ char *get_oneline(char *oneline, char *stash, int fd)
 
 	readbytes = read(fd, oneline, BUFFER_SIZE);
 	oneline = handle_newline(oneline, stash);
-	oneline = ft_strjoin(oneline, stash);
 	return (oneline);
 }
 //Winner Winner\nChicken Dinner
@@ -121,15 +123,10 @@ int	main(void)
 {
 	char	*huh;
 	int		fd;
-	int		i;
 
-	i = 2;
 	fd = open("moi.txt", O_RDONLY);
-	while (i)
-	{
-		huh = get_it(fd);
-		i--;
-		printf("%s\n", huh);
-	}
+	printf("%s\n", get_it(fd));
+	printf("%s\n", get_it(fd));
+
 	return (0);
 }
