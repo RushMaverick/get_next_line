@@ -3,10 +3,25 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#define BUFFER_SIZE 20
+#define BUFFER_SIZE 400
 
 char *handle_newline(char *oneline, char *stash);
 char *get_oneline(char *oneline, char *stash, int fd);
+
+void	*ft_memset(void *b, int c, size_t len)
+{
+	size_t			i;
+	unsigned char	*bcpy;
+
+	bcpy = (unsigned char *)b;
+	i = 0;
+	while (i < len)
+	{
+		bcpy[i] = (unsigned char)c;
+		i++;
+	}
+	return (b);
+}
 
 char	*ft_strdup(const char *s1)
 {
@@ -72,11 +87,11 @@ char *get_it(fd)
 	static char *stash;
 	char *oneline;
 
+	oneline = calloc(BUFFER_SIZE + 1, sizeof(char));
 	if (!stash)
 	{
 		stash = calloc(BUFFER_SIZE + 1, sizeof(char));	
 	}
-	oneline = calloc(BUFFER_SIZE + 1, sizeof(char));
 	oneline = get_oneline(oneline, stash, fd);
 	return (oneline);
 }
@@ -86,6 +101,7 @@ char *get_oneline(char *oneline, char *stash, int fd)
 	int readbytes;
 
 	readbytes = read(fd, oneline, BUFFER_SIZE);
+	oneline = ft_strjoin(stash, oneline);
 	oneline = handle_newline(oneline, stash);
 	return (oneline);
 }
@@ -102,7 +118,7 @@ char *handle_newline(char *oneline, char *stash)
 	while (oneline[i])
 	{
 		stash_index = 0;
-		if (oneline[i] == '\n' || oneline[i] == '\0')
+		if (oneline[i] == '\n')
 		{
 			i++;
 			while (oneline[i])
@@ -127,6 +143,7 @@ int	main(void)
 	fd = open("moi.txt", O_RDONLY);
 	printf("%s\n", get_it(fd));
 	printf("%s\n", get_it(fd));
+	
 
 	return (0);
 }
