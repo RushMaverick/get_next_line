@@ -6,12 +6,13 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 14:01:01 by rrask             #+#    #+#             */
-/*   Updated: 2023/02/22 14:23:23 by rrask            ###   ########.fr       */
+/*   Updated: 2023/02/22 16:01:07 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <string.h>
+
 char *handle_newline(char *oneline, char *stash)
 {
 	int i;
@@ -70,7 +71,7 @@ char	*ft_strjoin(char const *stash, char const *temp)
 	if (!temp)
 		return ((char *)stash);
 	if (!stash)
-		return(ft_strdup(temp));
+		return((char *)temp);
 	else
 	{
 		joined = calloc(strlen(stash) + strlen(temp) + 1, sizeof(char));//change to ft_strlen and ft_calloc
