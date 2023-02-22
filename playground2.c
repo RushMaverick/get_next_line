@@ -3,10 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#define BUFFER_SIZE 400
+#define BUFFER_SIZE 1
 
 char *handle_newline(char *oneline, char *stash);
-char *get_oneline(char *oneline, char *stash, int fd);
 
 void	*ft_memset(void *b, int c, size_t len)
 {
@@ -82,30 +81,23 @@ char	*ft_strjoin(char const *stash, char const *temp)
 	return (joined);
 }
 
-char *get_it(fd)
+char *get_next_line(fd)
 {
 	static char *stash;
 	char *oneline;
+	int readbytes;
 
 	oneline = calloc(BUFFER_SIZE + 1, sizeof(char));
 	if (!stash)
 	{
 		stash = calloc(BUFFER_SIZE + 1, sizeof(char));	
 	}
-	oneline = get_oneline(oneline, stash, fd);
-	return (oneline);
-}
-
-char *get_oneline(char *oneline, char *stash, int fd)
-{
-	int readbytes;
-
 	readbytes = read(fd, oneline, BUFFER_SIZE);
-	oneline = ft_strjoin(stash, oneline);
 	oneline = handle_newline(oneline, stash);
+	oneline = ft_strjoin(stash, oneline);
+
 	return (oneline);
 }
-//Winner Winner\nChicken Dinner
 
 char *handle_newline(char *oneline, char *stash)
 {
@@ -137,13 +129,16 @@ char *handle_newline(char *oneline, char *stash)
 
 int	main(void)
 {
-	char	*huh;
 	int		fd;
+	int		i;
 
 	fd = open("moi.txt", O_RDONLY);
-	printf("%s\n", get_it(fd));
-	printf("%s\n", get_it(fd));
+	i = 20;
+	while (i)
+	{
+		printf("%s", get_next_line(fd));
+		i--;
+	}
 	
-
 	return (0);
 }
