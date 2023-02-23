@@ -6,7 +6,7 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:28:44 by rrask             #+#    #+#             */
-/*   Updated: 2023/02/23 15:44:32 by rrask            ###   ########.fr       */
+/*   Updated: 2023/02/23 18:38:08 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,14 @@
 // 	return (oneline);
 // }
 
-char *handle_newline(char *read_line)
+char *handle_newline(char *read_line, int fd)
 {
 	char *handled_line;
 	int index;
 	
 	index = 0;
 	handled_line = ft_calloc(ft_strlen(read_line) + 1, sizeof(char));
-	while (read_line)
+	while (read_line[index])
 	{
 		if (read_line[index] == '\n')
 			break;
@@ -80,7 +80,8 @@ char	*read_it(char *stash, int fd)
 		stashindex = 0;
 		if (stash)
 		{
-			stash = handle_newline(read_line);
+			stash = handle_newline(read_line, fd);
+			return (stash);
 		}
 		stash[stashindex] = read_line[lineindex];
 		stashindex++;
