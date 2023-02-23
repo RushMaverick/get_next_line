@@ -6,40 +6,11 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 14:01:01 by rrask             #+#    #+#             */
-/*   Updated: 2023/02/23 11:44:03 by rrask            ###   ########.fr       */
+/*   Updated: 2023/02/23 11:49:30 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <string.h>
-
-char *handle_newline(char *oneline, char *stash)
-{
-	int i;
-	int stash_index;
-	char *handled_line;
-
-	i = 0;
-	handled_line = ft_calloc(strlen(oneline) + 1, sizeof(char)); //Count to \n and then ft_calloc correct size
-	while (oneline[i])
-	{
-		stash_index = 0;
-		if (oneline[i] == '\n')
-		{
-			i++;
-			while (oneline[i])
-			{
-				stash[stash_index] = oneline[i];
-				i++;
-				stash_index++;
-			}
-			return(handled_line);
-		}
-		handled_line[i] = oneline[i];
-		i++;
-	}
-	return (oneline);
-}
 
 static void	istheres(char *joined, char const *s1, char const *s2)
 {

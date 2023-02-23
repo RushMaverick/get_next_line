@@ -6,7 +6,7 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 10:51:11 by rrask             #+#    #+#             */
-/*   Updated: 2023/02/22 15:11:30 by rrask            ###   ########.fr       */
+/*   Updated: 2023/02/23 15:35:18 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE 10
 # endif
 
 char	*get_next_line(int fd);
-char	*handle_newline(char *oneline, char *stash);
+char	*read_it(char *stash, int fd);
 char	*ft_strjoin(char const *stash, char const *temp);
 void	*ft_memset(void *b, int c, size_t len);
 char	*ft_strdup(const char *s1);
