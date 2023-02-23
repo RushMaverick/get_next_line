@@ -6,7 +6,7 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 14:01:01 by rrask             #+#    #+#             */
-/*   Updated: 2023/02/22 16:01:07 by rrask            ###   ########.fr       */
+/*   Updated: 2023/02/23 11:44:03 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char *handle_newline(char *oneline, char *stash)
 	char *handled_line;
 
 	i = 0;
-	handled_line = calloc(strlen(oneline) + 1, sizeof(char)); //Count to \n and then ft_calloc correct size
+	handled_line = ft_calloc(strlen(oneline) + 1, sizeof(char)); //Count to \n and then ft_calloc correct size
 	while (oneline[i])
 	{
 		stash_index = 0;
@@ -74,7 +74,7 @@ char	*ft_strjoin(char const *stash, char const *temp)
 		return((char *)temp);
 	else
 	{
-		joined = calloc(strlen(stash) + strlen(temp) + 1, sizeof(char));//change to ft_strlen and ft_calloc
+		joined = ft_calloc(ft_strlen(stash) + ft_strlen(temp) + 1, sizeof(char));//change to ft_strlen and ft_calloc
 	}
 	if (!joined)
 		return (NULL);
