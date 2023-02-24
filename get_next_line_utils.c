@@ -6,7 +6,7 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 14:01:01 by rrask             #+#    #+#             */
-/*   Updated: 2023/02/23 11:49:30 by rrask            ###   ########.fr       */
+/*   Updated: 2023/02/24 11:39:44 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ void	ft_bzero(void *s, size_t n)
 }
 
 void	*ft_calloc(size_t count, size_t size)
+
 {
 	void	*ptr;
 	size_t	mult;
@@ -118,4 +119,16 @@ void	*ft_calloc(size_t count, size_t size)
 		return (0);
 	ft_bzero(ptr, mult);
 	return (ptr);
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] != (unsigned char)c && s[i] != '\0')
+		i++;
+	if (s[i] != (unsigned char)c)
+		return (NULL);
+	return ((char *)&s[i]);
 }
