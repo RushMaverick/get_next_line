@@ -6,7 +6,7 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:28:44 by rrask             #+#    #+#             */
-/*   Updated: 2023/02/27 11:10:48 by rrask            ###   ########.fr       */
+/*   Updated: 2023/02/27 16:13:41 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,51 +47,62 @@
 // 	return (oneline);
 // }
 
-char	*read_it(char *stash, int fd)
+char	*read_it(char *stash, char *read_line, int fd)
 {
 	int read_bytes;
 	int index;
 	int rl_index;
-	char *read_line = NULL;
-	char *temp_line = NULL;
-	
-	read_line = ft_calloc(BUFFER_SIZE, sizeof(char));
-	temp_line = ft_calloc(BUFFER_SIZE, sizeof(char));
+	char *remains;
+
 	read_bytes = read(fd, stash, BUFFER_SIZE);
+	remains = NULL;
 	rl_index = 0;
-	while (read_bytes) 
+	while (read_bytes)
 	{
 		index = 0;
-		if (rl_index < 0)
-			ft_strjoin(read_line, stash);
 		while (stash[index])
 		{
 			if (stash[index] == '\n')
 			{
+				if (stash[index])
+				{
+					rl_index = 0;
+					remains = ft_calloc(BUFFER_SIZE, sizeof(char)); //Find somewhere else to allocate, do note that ft_strjoin allocates as well
+					while (stash[index]) 
+					{
+						remains[rl_index] = stash[index];
+						index++;
+						rl_index++;
+					}
+				} 
 				return (read_line);	
 			}
 			read_line[rl_index] = stash[index];
 			index++;
 			rl_index++;
 		}
+		read_line[rl_index] = '\0';
 		read_bytes = read(fd, stash, BUFFER_SIZE);
 	}
-	return (stash);
+	return (read_line);
 }
 
 char	*get_next_line(fd)
 {
 	static char	*stash;
 	char		*oneline;
+	char *read_line;
 	int			readbytes;
 
 	oneline = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	if (!oneline)
+	read_line = ft_calloc(BUFFER_SIZE, sizeof(char));
+	if (!read_line)
 		return (NULL);
 	if (!stash)
 	{
 		stash = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	}
-	stash = read_it(stash, fd);
+	stash = read_it(stash, read_line, fd);
+	free(read_line);
 	return (stash);
 }
