@@ -6,7 +6,7 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:28:44 by rrask             #+#    #+#             */
-/*   Updated: 2023/02/24 15:33:08 by rrask            ###   ########.fr       */
+/*   Updated: 2023/02/27 11:10:48 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,19 +51,30 @@ char	*read_it(char *stash, int fd)
 {
 	int read_bytes;
 	int index;
-	char *read_line;
+	int rl_index;
+	char *read_line = NULL;
+	char *temp_line = NULL;
 	
-	read_bytes = read(fd, read_line, BUFFER_SIZE);
-	read_bytes = read(fd, read_line, BUFFER_SIZE);
-	read_bytes = read(fd, read_line, BUFFER_SIZE);
 	read_line = ft_calloc(BUFFER_SIZE, sizeof(char));
-	while ((read_bytes = read(fd, read_line, BUFFER_SIZE)) > 0) //non-norme compliant, read before loop and as last step of the loop
+	temp_line = ft_calloc(BUFFER_SIZE, sizeof(char));
+	read_bytes = read(fd, stash, BUFFER_SIZE);
+	rl_index = 0;
+	while (read_bytes) 
 	{
-		while (read_line[index])
+		index = 0;
+		if (rl_index < 0)
+			ft_strjoin(read_line, stash);
+		while (stash[index])
 		{
-			stash[index] = read_line[index];
+			if (stash[index] == '\n')
+			{
+				return (read_line);	
+			}
+			read_line[rl_index] = stash[index];
 			index++;
+			rl_index++;
 		}
+		read_bytes = read(fd, stash, BUFFER_SIZE);
 	}
 	return (stash);
 }
