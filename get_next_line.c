@@ -6,12 +6,13 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:28:44 by rrask             #+#    #+#             */
-/*   Updated: 2023/02/27 16:13:41 by rrask            ###   ########.fr       */
+/*   Updated: 2023/02/28 17:48:05 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h>
+#include <string.h>
 
 // char *handle_newline(char *oneline, char *stash, int fd)
 // {
@@ -47,62 +48,80 @@
 // 	return (oneline);
 // }
 
-char	*read_it(char *stash, char *read_line, int fd)
-{
-	int read_bytes;
-	int index;
-	int rl_index;
-	char *remains;
+// char	*read_it(char *stash, int fd)
+// {
+// 	int read_bytes;
+// 	int index;
+// 	int rl_index;
+// 	char *buf;
+// 	char *remains;
 
-	read_bytes = read(fd, stash, BUFFER_SIZE);
-	remains = NULL;
-	rl_index = 0;
-	while (read_bytes)
+// 	buf = malloc(sizeof(char) * BUFFER_SIZE);
+// 	read_bytes = read(fd, stash, BUFFER_SIZE);
+// 	rl_index = 0;
+// 	while (read_bytes)
+// 	{
+// 		index = 0;
+// 		while (stash[index])
+// 		{
+// 			if (stash[index] == '\n')
+// 			{
+// 				remains = ft_strjoin(remains, stash);
+// 				return (buf);	
+// 			}
+// 			buf[rl_index] = stash[index];
+// 			index++;
+// 			rl_index++;
+// 		}
+// 		read_bytes = read(fd, stash, BUFFER_SIZE);
+// 	}
+// 	return (buf);
+// }
+
+char	*read_it(char *stash, int fd)
+{
+	char *buf;
+	char *line;
+	int i;
+	int read_bytes;
+
+	buf = malloc(sizeof(char) * BUFFER_SIZE + 1);
+	line = malloc(sizeof(char) * BUFFER_SIZE + 1);
+	read_bytes = read(fd, buf, BUFFER_SIZE);
+	
+	while (read_bytes) //As long as there is something to read
 	{
-		index = 0;
-		while (stash[index])
+		i = 0;
+		while (line[i])
 		{
-			if (stash[index] == '\n')
+			if (line[i] == '\n') // It falls apart here. Line should not have '\n' in the first place. stash and buf should also not have the newline inside
 			{
-				if (stash[index])
-				{
-					rl_index = 0;
-					remains = ft_calloc(BUFFER_SIZE, sizeof(char)); //Find somewhere else to allocate, do note that ft_strjoin allocates as well
-					while (stash[index]) 
-					{
-						remains[rl_index] = stash[index];
-						index++;
-						rl_index++;
-					}
-				} 
-				return (read_line);	
+				stash = ft_strchr(line, '\n');
+				buf = ft_strjoin(stash, buf);
+				return(line);
 			}
-			read_line[rl_index] = stash[index];
-			index++;
-			rl_index++;
+			i++;
 		}
-		read_line[rl_index] = '\0';
-		read_bytes = read(fd, stash, BUFFER_SIZE);
+		line = ft_strjoin(line, buf);
+		// line = ft_strdup(buf);
+		read_bytes = read(fd, buf, BUFFER_SIZE);
 	}
-	return (read_line);
+	return(line);
 }
 
 char	*get_next_line(fd)
 {
 	static char	*stash;
-	char		*oneline;
-	char *read_line;
+	char		*read_line;
 	int			readbytes;
-
-	oneline = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	read_line = ft_calloc(BUFFER_SIZE, sizeof(char));
+	
+	read_line = malloc(sizeof(char) * BUFFER_SIZE);
 	if (!read_line)
 		return (NULL);
 	if (!stash)
 	{
-		stash = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+		stash = malloc(sizeof(char) * BUFFER_SIZE);
 	}
-	stash = read_it(stash, read_line, fd);
-	free(read_line);
-	return (stash);
+	read_line = read_it(stash, fd);
+	return (read_line);
 }

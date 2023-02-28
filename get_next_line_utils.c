@@ -6,7 +6,7 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 14:01:01 by rrask             #+#    #+#             */
-/*   Updated: 2023/02/24 11:39:44 by rrask            ###   ########.fr       */
+/*   Updated: 2023/02/28 10:40:51 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,18 @@ static void	istheres(char *joined, char const *s1, char const *s2)
 		j++;
 	}
 	joined[j] = '\0';
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] != (unsigned char)c && s[i] != '\0')
+		i++;
+	if (s[i] != (unsigned char)c)
+		return (NULL);
+	return ((char *)&s[i]);
 }
 
 char	*ft_strjoin(char const *stash, char const *temp)
@@ -119,16 +131,4 @@ void	*ft_calloc(size_t count, size_t size)
 		return (0);
 	ft_bzero(ptr, mult);
 	return (ptr);
-}
-
-char	*ft_strchr(const char *s, int c)
-{
-	int	i;
-
-	i = 0;
-	while (s[i] != (unsigned char)c && s[i] != '\0')
-		i++;
-	if (s[i] != (unsigned char)c)
-		return (NULL);
-	return ((char *)&s[i]);
 }
