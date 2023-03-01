@@ -6,7 +6,7 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:28:44 by rrask             #+#    #+#             */
-/*   Updated: 2023/02/28 17:48:05 by rrask            ###   ########.fr       */
+/*   Updated: 2023/02/28 18:30:49 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ char	*read_it(char *stash, int fd)
 	char *buf;
 	char *line;
 	int i;
+	int i2;
 	int read_bytes;
 
 	buf = malloc(sizeof(char) * BUFFER_SIZE + 1);
@@ -92,12 +93,13 @@ char	*read_it(char *stash, int fd)
 	while (read_bytes) //As long as there is something to read
 	{
 		i = 0;
-		while (line[i])
+		while (buf[i])
 		{
-			if (line[i] == '\n') // It falls apart here. Line should not have '\n' in the first place. stash and buf should also not have the newline inside
+			i2 = ft_strlen(line); //Should set i2 to the end of line
+			if (buf[i] == '\n') // It falls apart here. Line should not have '\n' in the first place. stash and buf should also not have the newline inside
 			{
-				stash = ft_strchr(line, '\n');
-				buf = ft_strjoin(stash, buf);
+				stash = ft_strchr(buf, '\n');
+				//loop through buf and copy it into line
 				return(line);
 			}
 			i++;
