@@ -6,7 +6,7 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:28:44 by rrask             #+#    #+#             */
-/*   Updated: 2023/03/01 14:33:14 by rrask            ###   ########.fr       */
+/*   Updated: 2023/03/01 18:09:17 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,33 @@
 #include <stdio.h>
 #include <string.h>
 
+char *update_stash(char *stash)
+{
+	char *remainder;
+	int i;
+
+	i = 0; 
+	remainder = ft_strdup(stash);
+	while (remainder[i])
+	{
+		if (remainder[i] == '\n')
+		{
+			i++;
+			stash = ft_strdup(&remainder[i]);
+			free(remainder);
+			return(stash);
+		}
+		i++;
+	}
+	return (stash);
+}
+
 char	*remain_get(char *read_line, char *stash)
 {
 	int i;
 
 	i = 0;
+	read_line = malloc(sizeof(char) * ft_strlen(stash) + 1);
 	while (stash[i])
 	{
 		if (stash[i] == '\n')
@@ -46,10 +68,10 @@ char	*read_it(char *stash, int fd)
 		i = 0;
 		while (buf[i])
 		{
-			//ft_strlcpy(char *dst, const char *src, size_t dstsize)
-			if (buf[i] == '\n') // It falls apart here. Line should not have '\n' in the first place. stash and buf should also not have the newline inside
+			if (buf[i] == '\n') 
 			{
 				line = ft_strjoin(line, buf);
+				free(buf);
 				return(line);
 			}
 			i++;
@@ -73,6 +95,6 @@ char	*get_next_line(fd)
 		stash = malloc(sizeof(char) * BUFFER_SIZE);
 	stash = read_it(stash, fd);
 	read_line =  remain_get(read_line, stash);
-	// stash = update_stash(stash); update stash to be what it needs to be for the next round
+	stash = update_stash(stash); //use the length of stash to find the index on where to start from buf in read_it
 	return (read_line);
 }
