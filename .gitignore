@@ -1,0 +1,9 @@
+main.c
+a.out
+a.out.dSYM/
+playground
+playground.dSYM/
+.DS_Store
+.vscode/
+playground2
+playground2.dSYM

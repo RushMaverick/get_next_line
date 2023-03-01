@@ -6,7 +6,7 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 14:01:01 by rrask             #+#    #+#             */
-/*   Updated: 2023/02/28 10:40:51 by rrask            ###   ########.fr       */
+/*   Updated: 2023/03/01 11:18:51 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,4 +131,26 @@ void	*ft_calloc(size_t count, size_t size)
 		return (0);
 	ft_bzero(ptr, mult);
 	return (ptr);
+}
+
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+{
+	size_t	i;
+	size_t	srclen;
+
+	i = 0;
+	srclen = 0;
+	while (src[srclen] != '\0')
+	{
+		if (dstsize > 1)
+		{
+			dst[i] = src[i];
+			i++;
+			dstsize--;
+		}
+		srclen++;
+	}
+	if (dstsize)
+		dst[i] = '\0';
+	return (srclen);
 }

@@ -6,7 +6,7 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:28:44 by rrask             #+#    #+#             */
-/*   Updated: 2023/02/28 18:30:49 by rrask            ###   ########.fr       */
+/*   Updated: 2023/03/01 14:33:14 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,76 +14,26 @@
 #include <stdio.h>
 #include <string.h>
 
-// char *handle_newline(char *oneline, char *stash, int fd)
-// {
-// 	int i;
-// 	int stash_index;
-// 	int readbytes;
-// 	char *handled_line;
+char	*remain_get(char *read_line, char *stash)
+{
+	int i;
 
-// 	i = 0;
-// 	;
-// 	if (!readbytes)
-// 		return(NULL);
-// 	oneline = ft_strjoin(stash, oneline);
-// 	handled_line = ft_calloc(ft_strlen(oneline) + 1, sizeof(char));
-		//Count to \n and then ft_calloc correct size
-// 	while ((readbytes = read(fd, oneline, BUFFER_SIZE) > 0)
-// 	{
-// 		stash_index = 0;
-// 		if (oneline[i] == '\n')
-// 		{
-// 			i++;
-// 			while (oneline[i])
-// 			{
-// 				stash[stash_index] = oneline[i];
-// 				i++;
-// 				stash_index++;
-// 			}
-// 			return(handled_line);
-// 		}
-// 		handled_line[i] = oneline[i];
-// 		i++;
-// 	}
-// 	return (oneline);
-// }
-
-// char	*read_it(char *stash, int fd)
-// {
-// 	int read_bytes;
-// 	int index;
-// 	int rl_index;
-// 	char *buf;
-// 	char *remains;
-
-// 	buf = malloc(sizeof(char) * BUFFER_SIZE);
-// 	read_bytes = read(fd, stash, BUFFER_SIZE);
-// 	rl_index = 0;
-// 	while (read_bytes)
-// 	{
-// 		index = 0;
-// 		while (stash[index])
-// 		{
-// 			if (stash[index] == '\n')
-// 			{
-// 				remains = ft_strjoin(remains, stash);
-// 				return (buf);	
-// 			}
-// 			buf[rl_index] = stash[index];
-// 			index++;
-// 			rl_index++;
-// 		}
-// 		read_bytes = read(fd, stash, BUFFER_SIZE);
-// 	}
-// 	return (buf);
-// }
+	i = 0;
+	while (stash[i])
+	{
+		if (stash[i] == '\n')
+			return(read_line);
+		read_line[i] = stash[i];
+		i++;	
+	}
+	return (read_line);
+}
 
 char	*read_it(char *stash, int fd)
 {
 	char *buf;
 	char *line;
 	int i;
-	int i2;
 	int read_bytes;
 
 	buf = malloc(sizeof(char) * BUFFER_SIZE + 1);
@@ -92,20 +42,19 @@ char	*read_it(char *stash, int fd)
 	
 	while (read_bytes) //As long as there is something to read
 	{
+		buf = ft_strjoin(stash, buf);
 		i = 0;
 		while (buf[i])
 		{
-			i2 = ft_strlen(line); //Should set i2 to the end of line
+			//ft_strlcpy(char *dst, const char *src, size_t dstsize)
 			if (buf[i] == '\n') // It falls apart here. Line should not have '\n' in the first place. stash and buf should also not have the newline inside
 			{
-				stash = ft_strchr(buf, '\n');
-				//loop through buf and copy it into line
+				line = ft_strjoin(line, buf);
 				return(line);
 			}
 			i++;
 		}
 		line = ft_strjoin(line, buf);
-		// line = ft_strdup(buf);
 		read_bytes = read(fd, buf, BUFFER_SIZE);
 	}
 	return(line);
@@ -121,9 +70,9 @@ char	*get_next_line(fd)
 	if (!read_line)
 		return (NULL);
 	if (!stash)
-	{
 		stash = malloc(sizeof(char) * BUFFER_SIZE);
-	}
-	read_line = read_it(stash, fd);
+	stash = read_it(stash, fd);
+	read_line =  remain_get(read_line, stash);
+	// stash = update_stash(stash); update stash to be what it needs to be for the next round
 	return (read_line);
 }
