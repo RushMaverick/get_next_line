@@ -6,7 +6,7 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:28:44 by rrask             #+#    #+#             */
-/*   Updated: 2023/03/01 18:09:17 by rrask            ###   ########.fr       */
+/*   Updated: 2023/03/02 12:49:43 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*remain_get(char *read_line, char *stash)
 	int i;
 
 	i = 0;
-	read_line = malloc(sizeof(char) * ft_strlen(stash) + 1);
+	read_line = ft_calloc(BUFFER_SIZE, sizeof(char));
 	while (stash[i])
 	{
 		if (stash[i] == '\n')
@@ -58,8 +58,8 @@ char	*read_it(char *stash, int fd)
 	int i;
 	int read_bytes;
 
-	buf = malloc(sizeof(char) * BUFFER_SIZE + 1);
-	line = malloc(sizeof(char) * BUFFER_SIZE + 1);
+	buf = ft_calloc(BUFFER_SIZE, sizeof(char));
+	line = ft_calloc(BUFFER_SIZE, sizeof(char));
 	read_bytes = read(fd, buf, BUFFER_SIZE);
 	
 	while (read_bytes) //As long as there is something to read
@@ -88,11 +88,11 @@ char	*get_next_line(fd)
 	char		*read_line;
 	int			readbytes;
 	
-	read_line = malloc(sizeof(char) * BUFFER_SIZE);
+	read_line = ft_calloc(BUFFER_SIZE, sizeof(char));
 	if (!read_line)
 		return (NULL);
 	if (!stash)
-		stash = malloc(sizeof(char) * BUFFER_SIZE);
+		stash = ft_calloc(BUFFER_SIZE, sizeof(char));
 	stash = read_it(stash, fd);
 	read_line =  remain_get(read_line, stash);
 	stash = update_stash(stash); //use the length of stash to find the index on where to start from buf in read_it
