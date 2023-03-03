@@ -6,7 +6,7 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:28:44 by rrask             #+#    #+#             */
-/*   Updated: 2023/03/02 12:49:43 by rrask            ###   ########.fr       */
+/*   Updated: 2023/03/03 14:52:47 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	*read_it(char *stash, int fd)
 	line = ft_calloc(BUFFER_SIZE, sizeof(char));
 	read_bytes = read(fd, buf, BUFFER_SIZE);
 	
-	while (read_bytes) //As long as there is something to read
+	while (read_bytes || (!read_bytes && stash)) //As long as there is something to read
 	{
 		buf = ft_strjoin(stash, buf);
 		i = 0;
@@ -86,7 +86,6 @@ char	*get_next_line(fd)
 {
 	static char	*stash;
 	char		*read_line;
-	int			readbytes;
 	
 	read_line = ft_calloc(BUFFER_SIZE, sizeof(char));
 	if (!read_line)
