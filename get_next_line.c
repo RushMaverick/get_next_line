@@ -37,21 +37,23 @@ char *update_stash(char *read_line)
 
 char	*get_it(char *stash)
 {
-	int i;
+	int index;
 	char *read_line;
 
-	i = 0;
-	read_line = ft_calloc(BUFFER_SIZE, sizeof(char));
-	while (stash[i])
+	index = 0;
+	while (stash[index])
+		index++;
+	read_line = ft_calloc(index + 1, sizeof(char));
+	index = 0;
+	while (stash[index])
 	{
-		if (stash[i] == '\n')
+		if (stash[index] == '\n')
 		{
-			read_line[i] = stash[i];
-			i++;
+			read_line[index] = stash[index];
 			return(read_line);
 		}
-		read_line[i] = stash[i];
-		i++;	
+		read_line[index] = stash[index];
+		index++;
 	}
 	return (read_line);
 }
@@ -68,10 +70,10 @@ char	*read_it(char *stash, int fd)
 	buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	line = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	read_bytes = read(fd, buf, BUFFER_SIZE);
+	buf = ft_strjoin(stash, buf);
 	
 	while (read_bytes || (!read_bytes && stash))
 	{
-		buf = ft_strjoin(stash, buf);
 		i = 0;
 		while (buf[i])
 		{
@@ -84,6 +86,7 @@ char	*read_it(char *stash, int fd)
 			i++;
 		}
 		line = ft_strjoin(line, buf);
+		buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 		read_bytes = read(fd, buf, BUFFER_SIZE);
 	}
 	return(line);
