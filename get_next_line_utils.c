@@ -6,7 +6,7 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 14:01:01 by rrask             #+#    #+#             */
-/*   Updated: 2023/03/01 11:18:51 by rrask            ###   ########.fr       */
+/*   Updated: 2023/03/06 15:06:07 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char	*ft_strdup(const char *s1)
 	char	*dup;
 	int		i;
 
-	dup = malloc((sizeof(char) * ft_strlen(s1) + 1)); //change to ft_strlen
+	dup = ft_calloc(ft_strlen(s1) + 1, sizeof(char)); //change to ft_strlen
 	if (dup == NULL)
 		return (NULL);
 	i = 0;
@@ -104,9 +104,7 @@ int	ft_strlen(const char *str)
 
 	i = 0;
 	while (str[i] != '\0')
-	{
 		i++;
-	}
 	return (i);
 }
 
