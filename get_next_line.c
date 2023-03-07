@@ -6,7 +6,7 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 14:15:51 by rrask             #+#    #+#             */
-/*   Updated: 2023/03/07 17:30:05 by rrask            ###   ########.fr       */
+/*   Updated: 2023/03/07 19:53:28 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,6 @@ char	*read_it(char *stash, int fd)
 	free(buf);
 	free(stash);
 	buf = temp;
-	if (read_bytes == 0)
-	{
-		free(line);
-		free(stash);
-		return (buf);
-	}
 	while (read_bytes > 0)
 	{
 		i = 0;
@@ -121,14 +115,12 @@ char	*get_next_line(int fd)
 	static char	*stash;
 	char		*read_line;
 
-	if (fd <= 0)
+	if (fd < 0 || BUFFER_SIZE == 0)
 		return (NULL);
-//	read_line = ft_calloc(BUFFER_SIZE + 1, sizeof(char)); No need to free as the read_it allocates mem
-//	if (!read_line)
-//		return (NULL);
 	if (!stash)
 		stash = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	//check is stash got created
+	if (!stash)
+		return (NULL);
 	read_line = read_it(stash, fd);
 	if (fd > 0)
 	{
