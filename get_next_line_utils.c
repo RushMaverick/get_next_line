@@ -6,7 +6,7 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 14:01:01 by rrask             #+#    #+#             */
-/*   Updated: 2023/03/07 19:30:46 by rrask            ###   ########.fr       */
+/*   Updated: 2023/03/07 20:14:12 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*ft_strchr(const char *s, int c)
 	return ((char *)&s[i]);
 }
 
-char	*ft_strjoin(char const *line, char const *buf)
+char	*ft_strjoinfree(char const *line, char const *buf)
 {
 	char	*joined;
 
@@ -62,6 +62,8 @@ char	*ft_strjoin(char const *line, char const *buf)
 	if (!joined)
 		return (NULL);
 	istheres(joined, line, buf);
+	free((void *)line);
+	free((void *)buf);
 	return (joined);
 }
 

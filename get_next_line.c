@@ -6,7 +6,7 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 14:15:51 by rrask             #+#    #+#             */
-/*   Updated: 2023/03/07 19:53:28 by rrask            ###   ########.fr       */
+/*   Updated: 2023/03/07 20:15:46 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ char	*read_it(char *stash, int fd)
 
 	buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	line = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	if (!line || !buf)
+		return(stash);
 	read_bytes = read(fd, buf, BUFFER_SIZE);
 	if (!read_bytes)
 	{
@@ -80,9 +82,7 @@ char	*read_it(char *stash, int fd)
 		free(buf);
 		return (stash);
 	}
-	temp = ft_strjoin(stash, buf);
-	free(buf);
-	free(stash);
+	temp = ft_strjoinfree(stash, buf);
 	buf = temp;
 	while (read_bytes > 0)
 	{
@@ -91,17 +91,13 @@ char	*read_it(char *stash, int fd)
 		{
 			if (buf[i] == '\n')
 			{
-				temp = ft_strjoin(line, buf);
-				free(buf);
-				free(line);
+				temp = ft_strjoinfree(line, buf);
 				line = temp;
 				return (line);
 			}
 			i++;
 		}
-		temp = ft_strjoin(line, buf);
-		free(line);
-		free(buf);
+		temp = ft_strjoinfree(line, buf);
 		line = temp;
 		buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 		read_bytes = read(fd, buf, BUFFER_SIZE);
@@ -115,7 +111,7 @@ char	*get_next_line(int fd)
 	static char	*stash;
 	char		*read_line;
 
-	if (fd < 0 || BUFFER_SIZE == 0)
+	if (fd <= 0 || BUFFER_SIZE == 0)
 		return (NULL);
 	if (!stash)
 		stash = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
