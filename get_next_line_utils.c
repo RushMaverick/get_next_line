@@ -6,7 +6,7 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 14:01:01 by rrask             #+#    #+#             */
-/*   Updated: 2023/03/06 15:06:07 by rrask            ###   ########.fr       */
+/*   Updated: 2023/03/07 14:32:16 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,21 +47,21 @@ char	*ft_strchr(const char *s, int c)
 	return ((char *)&s[i]);
 }
 
-char	*ft_strjoin(char const *stash, char const *temp)
+char	*ft_strjoin(char const *line, char const *buf)
 {
 	char	*joined;
 
-	if (!temp)
-		return ((char *)stash);
-	if (!stash)
-		return((char *)temp);
+	if (!buf)
+		return ((char *)line);
+	if (!line)
+		return((char *)buf);
 	else
 	{
-		joined = ft_calloc(ft_strlen(stash) + ft_strlen(temp) + 1, sizeof(char));//change to ft_strlen and ft_calloc
+		joined = ft_calloc(ft_strlen(line) + ft_strlen(buf) + 1, sizeof(char));//change to ft_strlen and ft_calloc
 	}
 	if (!joined)
 		return (NULL);
-	istheres(joined, stash, temp);
+	istheres(joined, line, buf);
 	return (joined);
 }
 
@@ -80,24 +80,6 @@ void	*ft_memset(void *b, int c, size_t len)
 	return (b);
 }
 
-char	*ft_strdup(const char *s1)
-{
-	char	*dup;
-	int		i;
-
-	dup = ft_calloc(ft_strlen(s1) + 1, sizeof(char)); //change to ft_strlen
-	if (dup == NULL)
-		return (NULL);
-	i = 0;
-	while (s1[i])
-	{
-		dup[i] = s1[i];
-		i++;
-	}
-	dup[i] = '\0';
-	return (dup);
-}
-
 int	ft_strlen(const char *str)
 {
 	size_t	i;
@@ -106,11 +88,6 @@ int	ft_strlen(const char *str)
 	while (str[i] != '\0')
 		i++;
 	return (i);
-}
-
-void	ft_bzero(void *s, size_t n)
-{
-	ft_memset(s, 0, n);
 }
 
 void	*ft_calloc(size_t count, size_t size)
@@ -127,28 +104,24 @@ void	*ft_calloc(size_t count, size_t size)
 	ptr = malloc(mult);
 	if (!ptr)
 		return (0);
-	ft_bzero(ptr, mult);
+	ft_memset(ptr, 0, mult);
 	return (ptr);
 }
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+char	*ft_strdup(const char *s1)
 {
-	size_t	i;
-	size_t	srclen;
+	char	*dup;
+	int		i;
 
+	dup = malloc((sizeof(char) * ft_strlen(s1) + 1));
+	if (dup == NULL)
+		return (NULL);
 	i = 0;
-	srclen = 0;
-	while (src[srclen] != '\0')
+	while (s1[i])
 	{
-		if (dstsize > 1)
-		{
-			dst[i] = src[i];
-			i++;
-			dstsize--;
-		}
-		srclen++;
+		dup[i] = s1[i];
+		i++;
 	}
-	if (dstsize)
-		dst[i] = '\0';
-	return (srclen);
+	dup[i] = '\0';
+	return (dup);
 }
