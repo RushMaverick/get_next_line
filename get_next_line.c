@@ -6,7 +6,7 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 14:15:51 by rrask             #+#    #+#             */
-/*   Updated: 2023/03/07 14:36:15 by rrask            ###   ########.fr       */
+/*   Updated: 2023/03/07 17:30:05 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ char	*update_stash(char *read_line)
 		}
 		i++;
 	}
+	//remainder needs to be free like so:
+	if (remainder)
+		free(remainder);
 	return (read_line);
 }
 
@@ -77,8 +80,10 @@ char	*read_it(char *stash, int fd)
 		free(buf);
 		return (stash);
 	}
-	buf = ft_strjoin(stash, buf);
+	temp = ft_strjoin(stash, buf);
+	free(buf);
 	free(stash);
+	buf = temp;
 	if (read_bytes == 0)
 	{
 		free(line);
@@ -118,14 +123,12 @@ char	*get_next_line(int fd)
 
 	if (fd <= 0)
 		return (NULL);
-	read_line = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	if (!read_line)
-	{
-		free(read_line);
-		return (NULL);
-	}
+//	read_line = ft_calloc(BUFFER_SIZE + 1, sizeof(char)); No need to free as the read_it allocates mem
+//	if (!read_line)
+//		return (NULL);
 	if (!stash)
 		stash = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	//check is stash got created
 	read_line = read_it(stash, fd);
 	if (fd > 0)
 	{
