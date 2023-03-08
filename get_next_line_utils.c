@@ -6,7 +6,7 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 14:01:01 by rrask             #+#    #+#             */
-/*   Updated: 2023/03/07 21:27:17 by rrask            ###   ########.fr       */
+/*   Updated: 2023/03/08 13:10:44 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	istheres(char *joined, char const *s1, char const *s2)
 	joined[j] = '\0';
 }
 
-char	*ft_strchr(const char *s, int c)
+char	*ft_strchr(const char *s, int c) //Not using this, it can be removed.
 {
 	int	i;
 
@@ -47,21 +47,16 @@ char	*ft_strchr(const char *s, int c)
 	return ((char *)&s[i]);
 }
 
-char	*ft_strjoinfree(char const *line, char const *buf)
+char	*ft_strjoinfree(char const *stash, char const *buf)
 {
 	char	*joined;
 
-	if (!buf)
-		return ((char *)line);
-	if (!line)
-		return((char *)buf);
-	else
-		joined = ft_calloc(ft_strlen(line) + ft_strlen(buf) + 1, sizeof(char));//change to ft_strlen and ft_calloc
+	joined = ft_calloc(ft_strlen(stash) + ft_strlen(buf) + 1, sizeof(char));
 	if (!joined)
 		return (NULL);
-	istheres(joined, line, buf);
+	istheres(joined, stash, buf);
 	free((void *)buf);
-	free((void *)line);
+	// free((void *)stash);
 	return (joined);
 }
 
@@ -83,7 +78,9 @@ void	*ft_memset(void *b, int c, size_t len)
 int	ft_strlen(const char *str)
 {
 	size_t	i;
-
+	
+	if (!str)
+		return(0);
 	i = 0;
 	while (str[i] != '\0')
 		i++;
