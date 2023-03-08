@@ -6,7 +6,7 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 14:01:01 by rrask             #+#    #+#             */
-/*   Updated: 2023/03/07 20:14:12 by rrask            ###   ########.fr       */
+/*   Updated: 2023/03/07 21:27:17 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,12 @@ char	*ft_strjoinfree(char const *line, char const *buf)
 	if (!line)
 		return((char *)buf);
 	else
-	{
 		joined = ft_calloc(ft_strlen(line) + ft_strlen(buf) + 1, sizeof(char));//change to ft_strlen and ft_calloc
-	}
 	if (!joined)
 		return (NULL);
 	istheres(joined, line, buf);
-	free((void *)line);
 	free((void *)buf);
+	free((void *)line);
 	return (joined);
 }
 

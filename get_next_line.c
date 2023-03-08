@@ -6,7 +6,7 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 14:15:51 by rrask             #+#    #+#             */
-/*   Updated: 2023/03/07 20:15:46 by rrask            ###   ########.fr       */
+/*   Updated: 2023/03/07 21:32:16 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,10 @@ char	*update_stash(char *read_line)
 		{
 			i++;
 			read_line = ft_strdup(&remainder[i]);
-			free(remainder);
 			return (read_line);
 		}
 		i++;
 	}
-	//remainder needs to be free like so:
-	if (remainder)
-		free(remainder);
 	return (read_line);
 }
 
@@ -53,13 +49,15 @@ char	*get_it(char *stash)
 		if (stash[index] == '\n')
 		{
 			read_line[index] = stash[index];
-			free(stash);
+			if(stash)
+				free(stash);
 			return (read_line);
 		}
 		read_line[index] = stash[index];
 		index++;
 	}
-	free(stash);
+	if (stash)
+		free(stash);
 	return (read_line);
 }
 
@@ -73,13 +71,15 @@ char	*read_it(char *stash, int fd)
 
 	buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	line = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	if (!line || !buf)
+	if (!line || !buf || read(fd, 0, 0) < 0)
 		return(stash);
 	read_bytes = read(fd, buf, BUFFER_SIZE);
 	if (!read_bytes)
 	{
-		free(line);
-		free(buf);
+		if (line)
+			free(line);
+		if (buf)
+			free(buf);
 		return (stash);
 	}
 	temp = ft_strjoinfree(stash, buf);
@@ -102,7 +102,8 @@ char	*read_it(char *stash, int fd)
 		buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 		read_bytes = read(fd, buf, BUFFER_SIZE);
 	}
-	free(buf);
+	if(buf)
+		free(buf);
 	return (line);
 }
 
@@ -111,7 +112,7 @@ char	*get_next_line(int fd)
 	static char	*stash;
 	char		*read_line;
 
-	if (fd <= 0 || BUFFER_SIZE == 0)
+	if (fd <= 0 || BUFFER_SIZE == 0 || read(fd, 0, 0) < 0)
 		return (NULL);
 	if (!stash)
 		stash = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
