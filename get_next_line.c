@@ -6,14 +6,25 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 14:15:51 by rrask             #+#    #+#             */
-/*   Updated: 2023/03/08 13:28:20 by rrask            ###   ########.fr       */
+/*   Updated: 2023/03/09 14:47:34 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
-char	*update_stash(char *read_line) // REMOVE STRDUP, cpy by indexes to remainder
+char	*ft_strchr(const char *s, int c)
+{
+	int		i;
+
+	i = 0;
+	while (s[i] != (unsigned char)c && s[i] != '\0')
+		i++;
+	if (s[i] != (unsigned char)c)
+		return (NULL);
+	return ((char *)&s[i]);
+}
+
+char	*update_stash(char *buf)
 {
 	char	*remainder;
 	int		i;
@@ -21,155 +32,92 @@ char	*update_stash(char *read_line) // REMOVE STRDUP, cpy by indexes to remainde
 
 	i = 0;
 	j = 0;
-	while (read_line[i] != '\n')
+	while (buf[i] && buf[i] != '\n')
 		i++;
-	if (read_line[i] == '\n')
-		i++;
-	remainder = ft_calloc(ft_strlen(read_line) -i + 1, sizeof(char));
+	if (!buf[i])
+	{
+		free(buf);
+		return (NULL);
+	}
+	remainder = ft_calloc(ft_strlen(buf) - i + 1, sizeof(char));
 	if (!remainder)
 		return (NULL);
-	while (read_line[i])
+	i++;
+	while (buf[i])
 	{
-		remainder[j] = read_line[i];
+		remainder[j] = buf[i];
 		i++;
 		j++;
 	}
+	free(buf);
 	return (remainder);
-	// return (remainder);
-	// {
-	// 	if (remainder[i] == '\n')
-	// 	{
-	// 		i++;
-	// 		read_line = ft_strdup(&remainder[i]);
-	// 		return (read_line);
-	// 	}
-	// 	i++;
-	// }
-	// return (read_line);
 }
 
 char	*get_it(char *read_line)
 {
 	int		index;
 	char	*line;
-	unsigned int	len;
 
 	index = 0;
-	len = ft_strlen(read_line);
-	line = ft_calloc(len + 1, sizeof(char));
+	while (read_line[index] && read_line[index] != '\n')
+		index++;
+	line = ft_calloc(index + 2, sizeof(char));
 	if (!line)
 		return (NULL);
+	index = 0;
 	while (read_line[index] && read_line[index] != '\n')
 	{
 		line[index] = read_line[index];
 		index++;
 	}
-	if (read_line[index] == '\n')
+	if (read_line[index] == '\n' && read_line[index])
 	{
 		line[index] = read_line[index];
-		index++;	
+		index++;
 	}
-	free(read_line);
 	return (line);
-	// while (read_line[index])
-	// 	index++;
-	// line = ft_calloc(index + 1, sizeof(char));
-	// if (!line)
-	// 	return (NULL);
-	// index = 0;
-	// while (read_line[index])
-	// {
-	// 	if (read_line[index] == '\n')
-	// 	{
-	// 		line[index] = read_line[index];
-	// 		if(read_line)
-	// 			free(read_line);
-	// 		return (line);
-	// 	}
-	// 	line[index] = read_line[index];
-	// 	index++;
-	// }
-	// if (read_line)
-	// 	free(read_line);
-	// return (line);
 }
 
-static int	check_new_line(char *str)
+char	*read_it(char *buf, int fd)
 {
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if(str[i] == '\n' || str[i] == '\0')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-char	*read_it(char *stash, int fd)
-{
-	char	*buf;
+	char	*read_buf;
 	int		read_bytes;
 
-	buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	if (!buf)
-		return(NULL);
+		buf = ft_calloc(1, sizeof(char));
+	read_buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	if (!read_buf || !buf)
+		return (NULL);
 	read_bytes = 1;
-	while (!check_new_line(buf) && read_bytes != 0)
+	while (read_bytes > 0)
 	{
-		read_bytes = read(fd, buf, BUFFER_SIZE);
-		buf[read_bytes] = '\0';
-		buf = ft_strjoinfree(stash, buf);
+		read_bytes = read(fd, read_buf, BUFFER_SIZE);
+		if (read_bytes == -1)
+		{
+			free(buf);
+			free(read_buf);
+			return (NULL);
+		}
+		read_buf[read_bytes] = '\0';
+		buf = ft_strjoinfree(buf, read_buf);
+		if (ft_strchr(buf, '\n'))
+			break ;
 	}
-	if (!read_bytes) //Check if sus
-	{
-		free(buf);
-		return (stash);	
-	}
+	free((void *)read_buf);
 	return (buf);
 }
-	// buf = joined;
-	// while (read_bytes > 0)
-	// {
-	// 	i = 0;
-	// 	while (buf[i])
-	// 	{
-	// 		if (buf[i] == '\n')
-	// 		{
-	// 			temp = ft_strjoinfree(line, buf);
-	// 			line = temp;
-	// 			return (line);
-	// 		}
-	// 		i++;
-	// 	}
-	// 	temp = ft_strjoinfree(line, buf);
-	// 	line = temp;
-	// 	buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	// 	read_bytes = read(fd, buf, BUFFER_SIZE);
-	// }
-	// if(buf)
-	// 	free(buf);
-	// return (line);
 
 char	*get_next_line(int fd)
 {
-	static char	*stash;
-	char		*read_line;
+	static char	*buf;
+	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE == 0 || read(fd, 0, 0) < 0)
+	if (fd <= 0 || BUFFER_SIZE == 0)
 		return (NULL);
-	if (!stash)
-		stash = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	if (!stash)
+	buf = read_it(buf, fd);
+	if (buf == '\0')
 		return (NULL);
-	read_line = read_it(stash, fd); // readline here is actually the buf THE WHOLE THING
-	// if (fd > 0)
-	// {
-	if (check_new_line(read_line))
-		stash = update_stash(read_line); // HERE WE TAKE THE WHOLE THING AND CHOP AFTER \n
-	read_line = get_it(read_line); // LAST THING IS WE GET EVERYTHING UNTIL \n TO PRINT IN THE TERMINAL
-	// }
-	return (read_line);
+	line = get_it(buf);
+	buf = update_stash(buf);
+	return (line);
 }

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/22 14:01:01 by rrask             #+#    #+#             */
-/*   Updated: 2023/03/08 13:10:44 by rrask            ###   ########.fr       */
+/*   Created: 2023/03/09 14:52:09 by rrask             #+#    #+#             */
+/*   Updated: 2023/03/09 14:55:16 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static void	istheres(char *joined, char const *s1, char const *s2)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 
 	i = 0;
 	j = 0;
@@ -35,56 +35,35 @@ static void	istheres(char *joined, char const *s1, char const *s2)
 	joined[j] = '\0';
 }
 
-char	*ft_strchr(const char *s, int c) //Not using this, it can be removed.
-{
-	int	i;
-
-	i = 0;
-	while (s[i] != (unsigned char)c && s[i] != '\0')
-		i++;
-	if (s[i] != (unsigned char)c)
-		return (NULL);
-	return ((char *)&s[i]);
-}
-
-char	*ft_strjoinfree(char const *stash, char const *buf)
+char	*ft_strjoinfree(char const *buf, char const *read_buf)
 {
 	char	*joined;
 
-	joined = ft_calloc(ft_strlen(stash) + ft_strlen(buf) + 1, sizeof(char));
+	joined = ft_calloc(ft_strlen(buf) + ft_strlen(read_buf) + 1, sizeof(char));
 	if (!joined)
 		return (NULL);
-	istheres(joined, stash, buf);
+	istheres(joined, buf, read_buf);
 	free((void *)buf);
-	// free((void *)stash);
 	return (joined);
-}
-
-void	*ft_memset(void *b, int c, size_t len)
-{
-	size_t			i;
-	unsigned char	*bcpy;
-
-	bcpy = (unsigned char *)b;
-	i = 0;
-	while (i < len)
-	{
-		bcpy[i] = (unsigned char)c;
-		i++;
-	}
-	return (b);
 }
 
 int	ft_strlen(const char *str)
 {
 	size_t	i;
-	
-	if (!str)
-		return(0);
+
 	i = 0;
 	while (str[i] != '\0')
 		i++;
 	return (i);
+}
+
+void	ft_bzero(void *str, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < n)
+		((char *)str)[i++] = '\0';
 }
 
 void	*ft_calloc(size_t count, size_t size)
@@ -101,24 +80,6 @@ void	*ft_calloc(size_t count, size_t size)
 	ptr = malloc(mult);
 	if (!ptr)
 		return (0);
-	ft_memset(ptr, 0, mult);
+	ft_bzero(ptr, mult);
 	return (ptr);
-}
-
-char	*ft_strdup(const char *s1)
-{
-	char	*dup;
-	int		i;
-
-	dup = malloc((sizeof(char) * ft_strlen(s1) + 1));
-	if (dup == NULL)
-		return (NULL);
-	i = 0;
-	while (s1[i])
-	{
-		dup[i] = s1[i];
-		i++;
-	}
-	dup[i] = '\0';
-	return (dup);
 }
