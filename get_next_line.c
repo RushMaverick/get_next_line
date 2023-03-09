@@ -6,7 +6,7 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 14:15:51 by rrask             #+#    #+#             */
-/*   Updated: 2023/03/09 14:47:34 by rrask            ###   ########.fr       */
+/*   Updated: 2023/03/09 17:18:26 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ char	*get_it(char *read_line)
 	char	*line;
 
 	index = 0;
+	if (!*read_line)
+		return (NULL);
 	while (read_line[index] && read_line[index] != '\n')
 		index++;
 	line = ft_calloc(index + 2, sizeof(char));
@@ -112,7 +114,7 @@ char	*get_next_line(int fd)
 	static char	*buf;
 	char		*line;
 
-	if (fd <= 0 || BUFFER_SIZE == 0)
+	if (fd < 0 || BUFFER_SIZE == 0)
 		return (NULL);
 	buf = read_it(buf, fd);
 	if (buf == '\0')
