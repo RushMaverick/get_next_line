@@ -7,3 +7,7 @@ playground.dSYM/
 .vscode/
 playground2
 playground2.dSYM
+main.c
+moi.txt
+README.md
+.gitignore
