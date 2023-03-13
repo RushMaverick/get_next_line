@@ -6,7 +6,7 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 10:51:11 by rrask             #+#    #+#             */
-/*   Updated: 2023/03/10 11:09:12 by rrask            ###   ########.fr       */
+/*   Updated: 2023/03/12 19:16:57 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ char	*get_next_line(int fd);
 char	*read_it(char *buf, int fd);
 char	*update_stash(char *read_line);
 char	*get_it(char *stash);
+int		ft_strchr(const char *s, int c);
 char	*ft_strjoinfree(char const *line, char const *buf);
 int		ft_strlen(const char *str);
 void	*ft_calloc(size_t count, size_t size);

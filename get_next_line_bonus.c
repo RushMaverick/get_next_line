@@ -6,22 +6,24 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 14:15:51 by rrask             #+#    #+#             */
-/*   Updated: 2023/03/10 14:17:16 by rrask            ###   ########.fr       */
+/*   Updated: 2023/03/12 19:22:04 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-char	*ft_strchr(const char *s, int c)
+int	ft_strchr(const char *s, int c)
 {
 	int		i;
 
 	i = 0;
+	if (!s)
+		return(1);
 	while (s[i] != (unsigned char)c && s[i] != '\0')
 		i++;
 	if (s[i] != (unsigned char)c)
-		return (NULL);
-	return ((char *)&s[i]);
+		return (0);
+	return (1);
 }
 
 char	*update_stash(char *buf)
@@ -117,7 +119,7 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE == 0)
 		return (NULL);
 	buf[fd] = read_it(buf[fd], fd);
-	if (buf[fd] == '\0')
+	if (buf[fd] == NULL)
 		return (NULL);
 	line = get_it(buf[fd]);
 	buf[fd] = update_stash(buf[fd]);
