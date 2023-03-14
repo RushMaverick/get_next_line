@@ -6,7 +6,7 @@
 /*   By: rrask <rrask@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 14:15:51 by rrask             #+#    #+#             */
-/*   Updated: 2023/03/12 19:18:54 by rrask            ###   ########.fr       */
+/*   Updated: 2023/03/14 11:04:21 by rrask            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 int	ft_strchr(const char *s, int c)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	if (!s)
-		return(1);
+		return (1);
 	while (s[i] != (unsigned char)c && s[i] != '\0')
 		i++;
 	if (s[i] != (unsigned char)c)
